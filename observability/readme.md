@@ -79,7 +79,24 @@ Semantic log: [Good reading](https://github.com/Azure/diagnostics-eventflow)
 
 ## Logging Framework and other tools
 
-<mark>HERE'S HUGOS TABLE</mark>
+Intro here - blah blah blah
+
+### Observability platforms and products
+
+The following table shows most notable players in Application Performance Monitoring and other Observability products at the time of writing.
+
+| Name | Gartner rank| Notes |
+| --- |:---: | :---: |
+| AppDynamics | 1st Lead |
+| Dynatrace   | 2nd Lead |
+| New Relic   | 3rd Lead |
+| Bradcom     | 4th Lead |
+| Microsoft   | 1st Challenger |
+| Splunk      | 1st visionary |
+| Datadog     | 2nd visionary |
+| Prometheus  | NA |
+| Grafana     | NA |
+| Graphite    | NA |
 
 ## Observability in ML
 
