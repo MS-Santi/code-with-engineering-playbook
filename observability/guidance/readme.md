@@ -12,11 +12,12 @@ Questions for this guide:
 This document provides general guidance regarding observability.
 Topics in this guide:
 
-* [Getting Started](#GettingStarted)
-* [Common Pitfalls](#Pitfalls)
-* [Event Logging](#EventLogging)
+* [Getting Started](#Getting-Started---Recommended-Practices)
+* [Common Pitfalls](#Commom-Pitfalls)
+* [Event Logging](#Event-Logging)
 * [Metrics](#Metrics)
 * [Tracing](#Tracing)
+  * [Correlation Ids](#Correlation-IDs)
 * [Alerting](#Alerting)
 
 More specific guidance is available for:
@@ -24,18 +25,18 @@ More specific guidance is available for:
 * [Planning Guidance](./planning.md)
 * [Implementation Guidance](./implementation.md)
 
-## [Getting Started - Recommended Practices](#GettingStarted)
+## Getting Started - Recommended Practices
 
 1. **Correlation Id**: Include unique identifier at the start of the interaction to tie down aggregated data from various system components and provide a holistic view. Read more guidelines about using [correlation id](#Correlation-IDs).
 2. Ensure health of the services are **monitored** and provide insights into system's performance and behavior.
 3. **Faults, crashes, and failures** are logged as discrete events. This helps engineers identify problem area(s) during failures.
 4. Ensure logging configuration (eg: setting logging to "verbose") can be controlled without code changes.
 5. Ensure that **metrics** around latency and duration are collected and can be aggregated.
-6. Start small and add where there is customer impact. [Avoiding metric fatigue](pitfalls.md#metric-fatigue) is very crucial to collecting actionable data.
+6. Start small and add where there is customer impact. [Avoiding metric fatigue](#metric-fatigue) is very crucial to collecting actionable data.
 7. It is important that every data that is collected contains relevant and rich context.
 8. Personally Identifiable Information or any other customer sensitive information should never be logged. Special attention should be paid to any local privacy data regulations and collected data must adhere to those. (ex: GPDR)
 
-## [Common Pitfalls](#Pitfalls)
+## Common Pitfalls
 
 ### Observability as an after thought
 
@@ -57,7 +58,7 @@ Every data logged must contain rich context, which is useful for getting an over
 
 As a general rule, do not log any customer sensitive and Personal Identifiable Information (PII). Ensure any pertinent privacy regulations are followed regarding PII (Ex: GDPR etc.,)
 
-## [Event Logging](#EventLogging)
+## Event Logging
 
 ### Overview
 
@@ -134,7 +135,7 @@ This approach isn't without trade-offs:
 * [The Elastic Stack](https://www.elastic.co/what-is/elk-stack) - An open source log analytics tech stack utilizing Logstash, Beats, Elastic search and Kibana.
 * [Grafana](https://grafana.com) - Open source dashboard & visualization tool. Supports Log, Metrics and Distributed tracing data sources.
 
-## [Metrics](#Metrics)
+## Metrics
 
 ### Overview
 
@@ -206,7 +207,7 @@ Modern metric systems today usually define a single time series metric as the co
 * [Cortex](https://cortexmetrics.io) - Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 * [Grafana](https://grafana.com) - Open source dashboard & visualization tool. Supports Log, Metrics and Distributed tracing data sources.
 
-## [Tracing]
+## Tracing
 
 ### Overview
 
@@ -270,7 +271,7 @@ Using Correlation ID helps secondary systems to correlate data without applicati
 
 For troubleshooting an errors, Correlation ID is a great starting point to trace the workflow of a transaction.
 
-## [Alerting](#Alerting)
+## Alerting
 
 One of the goals of building highly observable systems is to provide valuable insight into the behavior of the application. Observable systems allow problems to be identified and surfaced through alerts before end users are impacted.
 
