@@ -14,14 +14,13 @@ Topics in this guide:
 
 * [Event Logging](#EventLogging)
 * [Metrics](#Metrics)
+* [Tracing](#Tracing)
 * [Alerting](#Alerting)
 
 More specific guidance is available for:
 
 * [Planning Guidance](./planning.md)
 * [Implementation Guidance](./implementation.md)
-
----------
 
 ## [Event Logging](#EventLogging)
 
@@ -162,7 +161,7 @@ Modern metric systems today usually define a single time series metric as the co
 * Kubernetes cluster name
 * Azure Region
 
-_Note_: Since dimension labels are used for aggregations and grouping operations, do not use unique strings or those with high cardinality as the value of a label. The value of the label is significantly diminished for reporting and in many cases has a negative performance hit on the metric system used to track it.
+> Note: Since dimension labels are used for aggregations and grouping operations, do not use unique strings or those with high cardinality as the value of a label. The value of the label is significantly diminished for reporting and in many cases has a negative performance hit on the metric system used to track it.
 
 ### Recommended Tools
 
@@ -170,6 +169,27 @@ _Note_: Since dimension labels are used for aggregations and grouping operations
 * [Prometheus](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) - A real-time monitoring & alerting application. It's exposition format for exposing time-series is the basis for OpenMetrics's standard format.
 * [Thanos](https://thanos.io) - Open source, highly available Prometheus setup with long term storage capabilities.
 * [Cortex](https://cortexmetrics.io) - Horizontally scalable, highly available, multi-tenant, long term Prometheus.
+* [Grafana](https://grafana.com) - Open source dashboard & visualization tool. Supports Log, Metrics and Distributed tracing data sources.
+
+## [Tracing](#Tracing)
+
+### Overview
+
+Produces the information required to observe series of correlated operations in a distributed system. Once collected they show the path, measurements and faults in a end to end transaction.
+
+### Best Practices
+
+* Ensure that at least key business transactions are traced.
+* Include in each trace necessary information to identify software releases (i.e. service name, version). This is important to correlate deployments and system degradation.
+* Ensure dependencies are included in trace (databases, I/O).
+* If costs are a concern use sampling, avoiding throwing away errors, unexpected behaviour and critical information.
+* Don't reinvent the wheel, use existing tools to collect and analyse the data.
+* Ensure personal identifiable information policies and restrictions are followed.
+
+### Recommended Tools
+
+* [Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) - Umbrella of services including system metrics, log analytics and more.
+* [Jaeger Tracing](https://www.jaegertracing.io) - Open source, end-to-end distributed tracing.
 * [Grafana](https://grafana.com) - Open source dashboard & visualization tool. Supports Log, Metrics and Distributed tracing data sources.
 
 ## [Alerting](#Alerting)
