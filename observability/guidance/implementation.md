@@ -1,4 +1,4 @@
-Questions for this guide
+# Observability Implementation Guide
 
 * I've head Trace.WriteLine is an observability code smell. How can I identify and address?
 * Why and when to use TelemetryClient, Ilogger, IDomainLogger, etc
