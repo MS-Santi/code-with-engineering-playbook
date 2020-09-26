@@ -25,12 +25,11 @@ In some instances, observability is required to enable key scenarios (i.e. scali
 
 This describes general concepts regarding observability. These concepts are used in the rest of this observability documentation:
 
-
-* [Observability in ML](./ml-observability) 
+* [Observability in ML](./ml-observability) - Read on how Observability can be implemented in Machine Learning engagements effectively during Model tuning, experimentation and deployment.
 * [General Guidance](./guidance/readme.md)
 * [Planning Guidance](./guidance/planning.md)
 * [Implementation Guidance](./guidance/implementation.md)
-* [Tools and Frameworks](./tools-frameworks/readme.md)
+* [Tools and Frameworks](./tools-frameworks/readme.md) - Read about existing tools and frameworks that can assist in the instrumentation and implementation of observability capabilities.
 
 ## Concepts
 
