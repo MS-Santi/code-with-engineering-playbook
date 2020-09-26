@@ -72,6 +72,9 @@ Events are incidents of interest that occur in the system. These can be domain s
 
 Metrics are measurements of a particular process or activity considered over intervals of time.
 
+* Use metrics to track the occurrence of an event, counting of items, the time taken to perform an action or to report the current value of a resource (CPU, memory, etc.)
+* Use event logs to track detailed information about an event also monitored by a metric, particularly errors, warnings or other exceptional situations.
+
 #### Tracing
 
 Tracing is the practice of tracking dependencies between logged events, and including enough context to enable engineers to follow the lifetime of a high-level transaction throught its execution in the system.
