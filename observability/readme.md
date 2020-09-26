@@ -1,55 +1,64 @@
 # Observability
 
-Building observable systems enables development teams at CSE to measure how well the application is behaving.
+## Introduction
 
-## Goals
+Observability is the set of capabilities of a system that allow to investigate whether it is performing and how. It provides the ability to understand the internal state of a system from the data it produces and the ability to explore that data to answer questions about what happened and why.
 
-1. Provide holistic view on the health of the application.
-2. Help measure business performance for the customer.
-3. Measure operational performance of the system.
-4. Identify and diagnose failures to get to the problem fast.
+These capabilities enable proactive monitoring via ad-hoc queries and reporting, and reactive alerting. In addition, with the help of AI, they can assist in providing predictive information.
 
-## Sections
+If the system departs from its normal operation, these capabilities ease the research into what is not going as expected. Telemetry information on the usage and performance of the system and its constituents assists in this research.
 
-- [Pillars of Observability](#pillars-of-observability)
-- [Observability in Machine Learning](ml-observability.md)
-- [Recommended Practices](#recommended-practices)
-- [Logs vs Metrics](log-vs-metric.md)
-- [Recipes](#recipes)
+In some instances, observability is required to enable key scenarios (i.e. scaling out/up and in/down), where observations the current system status can be compared to the defined scaling thresholds.
 
-## Pillars of Observability
+## Concepts
 
-1. [Logging](pillars/logging.md)
-2. [Tracing](pillars/tracing.md)
-3. [Metrics](pillars/metrics.md)
+### Components in the Observability Infrastructure
 
-## Observability in Machine Learning
+![](https://mermaid.ink/img/eyJjb2RlIjoiZmxvd2NoYXJ0IExSO1xuRVtFdmVudCBMb2dnaW5nXTtcbkNhKENhcHR1cmUpO1xuUHAoW1ByZS1wcm9jZXNzaW5nL0FnZ3JlZ2F0aW9uXSk7XG5MT1tbTG9jYWwgT3V0cHV0XV07XG5QcyhbUG9zdC1wcm9jZXNzaW5nL0FnZ3JlZ2F0aW9uXSk7XG5DWyhDb2xsZWN0aW9uKV07XG5SW1JlcG9ydGluZyBhbmQgVmlzdWFsaXphdGlvbl1cbkFJKChBSS9NTCkpO1xuU1svU3RyZWFtaW5nL107XG5QUltQYXR0ZXJuIFJlY29nbml0aW9uXTtcbnN1YmdyYXBoIE9ic2VydmVkIFN5c3RlbTtcbiAgICBDYSAtLi0-IExPO1xuICAgIENhIDwtLi0-IFBwO1xuICAgIE1ldHJpY3MgLS0-IENhO1xuICAgIEUgLS0-IENhO1xuZW5kO1xuQ2EgLS4tPiBTO1xuQ2EgPT0-IEM7XG5DIDwtLi0-IFBzO1xuQyAtLT4gUjtcbkMgLS0-IEFsZXJ0aW5nO1xuQW5hbHlzaXMgLS0-IFByZWRpY3Rpb247XG5BbmFseXNpcyAtLT4gUFI7XG5BSSAtLi0-IEFuYWx5c2lzO1xuQyAtLT4gQW5hbHlzaXM7IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQiLCJ0aGVtZVZhcmlhYmxlcyI6eyJiYWNrZ3JvdW5kIjoid2hpdGUiLCJwcmltYXJ5Q29sb3IiOiIjRUNFQ0ZGIiwic2Vjb25kYXJ5Q29sb3IiOiIjZmZmZmRlIiwidGVydGlhcnlDb2xvciI6ImhzbCg4MCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwicHJpbWFyeUJvcmRlckNvbG9yIjoiaHNsKDI0MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJzZWNvbmRhcnlCb3JkZXJDb2xvciI6ImhzbCg2MCwgNjAlLCA4My41Mjk0MTE3NjQ3JSkiLCJ0ZXJ0aWFyeUJvcmRlckNvbG9yIjoiaHNsKDgwLCA2MCUsIDg2LjI3NDUwOTgwMzklKSIsInByaW1hcnlUZXh0Q29sb3IiOiIjMTMxMzAwIiwic2Vjb25kYXJ5VGV4dENvbG9yIjoiIzAwMDAyMSIsInRlcnRpYXJ5VGV4dENvbG9yIjoicmdiKDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxLCA5LjUwMDAwMDAwMDEpIiwibGluZUNvbG9yIjoiIzMzMzMzMyIsInRleHRDb2xvciI6IiMzMzMiLCJtYWluQmtnIjoiI0VDRUNGRiIsInNlY29uZEJrZyI6IiNmZmZmZGUiLCJib3JkZXIxIjoiIzkzNzBEQiIsImJvcmRlcjIiOiIjYWFhYTMzIiwiYXJyb3doZWFkQ29sb3IiOiIjMzMzMzMzIiwiZm9udEZhbWlseSI6IlwidHJlYnVjaGV0IG1zXCIsIHZlcmRhbmEsIGFyaWFsIiwiZm9udFNpemUiOiIxNnB4IiwibGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsIm5vZGVCa2ciOiIjRUNFQ0ZGIiwibm9kZUJvcmRlciI6IiM5MzcwREIiLCJjbHVzdGVyQmtnIjoiI2ZmZmZkZSIsImNsdXN0ZXJCb3JkZXIiOiIjYWFhYTMzIiwiZGVmYXVsdExpbmtDb2xvciI6IiMzMzMzMzMiLCJ0aXRsZUNvbG9yIjoiIzMzMyIsImVkZ2VMYWJlbEJhY2tncm91bmQiOiIjZThlOGU4IiwiYWN0b3JCb3JkZXIiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJhY3RvckJrZyI6IiNFQ0VDRkYiLCJhY3RvclRleHRDb2xvciI6ImJsYWNrIiwiYWN0b3JMaW5lQ29sb3IiOiJncmV5Iiwic2lnbmFsQ29sb3IiOiIjMzMzIiwic2lnbmFsVGV4dENvbG9yIjoiIzMzMyIsImxhYmVsQm94QmtnQ29sb3IiOiIjRUNFQ0ZGIiwibGFiZWxCb3hCb3JkZXJDb2xvciI6ImhzbCgyNTkuNjI2MTY4MjI0MywgNTkuNzc2NTM2MzEyOCUsIDg3LjkwMTk2MDc4NDMlKSIsImxhYmVsVGV4dENvbG9yIjoiYmxhY2siLCJsb29wVGV4dENvbG9yIjoiYmxhY2siLCJub3RlQm9yZGVyQ29sb3IiOiIjYWFhYTMzIiwibm90ZUJrZ0NvbG9yIjoiI2ZmZjVhZCIsIm5vdGVUZXh0Q29sb3IiOiJibGFjayIsImFjdGl2YXRpb25Cb3JkZXJDb2xvciI6IiM2NjYiLCJhY3RpdmF0aW9uQmtnQ29sb3IiOiIjZjRmNGY0Iiwic2VxdWVuY2VOdW1iZXJDb2xvciI6IndoaXRlIiwic2VjdGlvbkJrZ0NvbG9yIjoicmdiYSgxMDIsIDEwMiwgMjU1LCAwLjQ5KSIsImFsdFNlY3Rpb25Ca2dDb2xvciI6IndoaXRlIiwic2VjdGlvbkJrZ0NvbG9yMiI6IiNmZmY0MDAiLCJ0YXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwidGFza0JrZ0NvbG9yIjoiIzhhOTBkZCIsInRhc2tUZXh0TGlnaHRDb2xvciI6IndoaXRlIiwidGFza1RleHRDb2xvciI6IndoaXRlIiwidGFza1RleHREYXJrQ29sb3IiOiJibGFjayIsInRhc2tUZXh0T3V0c2lkZUNvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dENsaWNrYWJsZUNvbG9yIjoiIzAwMzE2MyIsImFjdGl2ZVRhc2tCb3JkZXJDb2xvciI6IiM1MzRmYmMiLCJhY3RpdmVUYXNrQmtnQ29sb3IiOiIjYmZjN2ZmIiwiZ3JpZENvbG9yIjoibGlnaHRncmV5IiwiZG9uZVRhc2tCa2dDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQm9yZGVyQ29sb3IiOiJncmV5IiwiY3JpdEJvcmRlckNvbG9yIjoiI2ZmODg4OCIsImNyaXRCa2dDb2xvciI6InJlZCIsInRvZGF5TGluZUNvbG9yIjoicmVkIiwibGFiZWxDb2xvciI6ImJsYWNrIiwiZXJyb3JCa2dDb2xvciI6IiM1NTIyMjIiLCJlcnJvclRleHRDb2xvciI6IiM1NTIyMjIiLCJjbGFzc1RleHQiOiIjMTMxMzAwIiwiZmlsbFR5cGUwIjoiI0VDRUNGRiIsImZpbGxUeXBlMSI6IiNmZmZmZGUiLCJmaWxsVHlwZTIiOiJoc2woMzA0LCAxMDAlLCA5Ni4yNzQ1MDk4MDM5JSkiLCJmaWxsVHlwZTMiOiJoc2woMTI0LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTQiOiJoc2woMTc2LCAxMDAlLCA5Ni4yNzQ1MDk4MDM5JSkiLCJmaWxsVHlwZTUiOiJoc2woLTQsIDEwMCUsIDkzLjUyOTQxMTc2NDclKSIsImZpbGxUeXBlNiI6ImhzbCg4LCAxMDAlLCA5Ni4yNzQ1MDk4MDM5JSkiLCJmaWxsVHlwZTciOiJoc2woMTg4LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkifX19)
 
-Read on how Observability can be implemented in [Machine Learning](ml-observability.md) engagements effectively during Model tuning, experimentation and deployment.
+``` text
+flowchart LR;
+E[Event Logging];
+Ca(Capture);
+Pp([Pre-processing/Aggregation]);
+LO[[Local Output]];
+Ps([Post-processing/Aggregation]);
+C[(Collection)];
+R[Reporting and Visualization]
+AI((AI/ML));
+S[/Streaming/];
+PR[Pattern Recognition];
+subgraph Observed System;
+    Ca -.-> LO;
+    Ca <-.-> Pp;
+    Metrics --> Ca;
+    E --> Ca;
+end;
+Ca -.-> S;
+Ca ==> C;
+C <-.-> Ps;
+C --> R;
+C --> Alerting;
+Analysis --> Prediction;
+Analysis --> PR;
+AI -.-> Analysis;
+C --> Analysis;
+```
 
-## Recommended Practices
+### Events and Metrics
 
-1. **Correlation Id**: Include unique identifier at the start of the interaction to tie down aggregated data from various system components and provide a holistic view. Read more guidelines about using [correlation id](correlation-id.md).
-2. Ensure health of the services are **monitored** and provide insights into system's performance and behavior.
-3. **Faults, crashes, and failures** are logged as discrete events. This helps engineers identify problem area(s) during failures.
-4. Ensure logging configuration (eg: setting logging to "verbose") can be controlled without code changes.
-5. Ensure that **metrics** around latency and duration are collected and can be aggregated.
-6. Start small and add where there is customer impact. [Avoiding metric fatigue](pitfalls.md#metric-fatigue) is very crucial to collecting actionable data.
-7. It is important that every data that is collected contains relevant and rich context.
-8. Personally Identifiable Information or any other customer sensitive information should never be logged. Special attention should be paid to any local privacy data regulations and collected data must adhere to those. (ex: GPDR)
+Events are incidents of interest that occur in the system. These can be domain specific, or tool or technology-specific, including exceptions.
 
-Read more [here](pitfalls.md) to understand what to watch out for while designing and building an observable system.
+Metrics are measurements of a particular process or activity considered over intervals of time.
 
-## Recipes
+#### Tracing
 
-### Application Insights/ASP.NET
+Tracing is the practice of tracking dependencies between logged events, and including enough context to enable engineers to follow the lifetime of a high-level transaction throught its execution in the system.
 
-[Github Repo](https://github.com/Azure-Samples/application-insights-aspnet-sample-opentelemetry), [Article](https://devblogs.microsoft.com/aspnet/observability-asp-net-core-apps/).
+### Semantic Logging
 
-### On-premises Application Insights
+[Description of Semantic Logging](https://github.com/microsoftarchive/semantic-logging)
 
-[On-premise Application Insights](https://github.com/c-w/appinsights-on-premises) is a service that is compatible with Azure App Insights, but stores the data in an in-house database like PostgreSQL or object storage like [Azurite](https://github.com/Azure/Azurite).
+## Observability in ML
 
-On-premises Application Insights is useful as a drop-in replacement for Azure Application Insights in scenarios where a solution must be cloud deployable but must also support on-premises disconnected deployment scenarios.
-
-On-premises Application Insights is also useful for testing telemetry integration. Issues related to telemetry can be hard to catch since often these integrations are excluded from unit-test or integration test flows due to it being non-trivial to use a live Azure Application Insights resource for testing, e.g. managing the lifetime of the resource, having to ignore old telemetry for assertions, if a new resource is used it can take a while for the telemetry to show up, etc. The On-premise Application Insights service can be used to make it easier to integrate with an Azure Application Insights compatible API endpoint during local development or continuous integration without having to spin up a resource in Azure. Additionally, the service simplifies integration testing of asynchronous workflows such as web workers since integration tests can now be written to assert against telemetry logged to the service, e.g. assert that no exceptions were logged, assert that some number of events of a specific type were logged within a certain time-frame, etc.
+Please refer to the [Observability in ML](./ml-observability) document.
