@@ -21,6 +21,17 @@ If the system departs from its normal operation, these capabilities ease the res
 
 In some instances, observability is required to enable key scenarios (i.e. scaling out/up and in/down), where observations the current system status can be compared to the defined scaling thresholds.
 
+## Resources
+
+This describes general concepts regarding observability. These concepts are used in the rest of this observability documentation:
+
+
+* [Observability in ML](./ml-observability) 
+* [General Guidance](./guidance/readme.md)
+* [Planning Guidance](./guidance/planning.md)
+* [Implementation Guidance](./guidance/implementation.md)
+* [Tools and Frameworks](./tools-frameworks/readme.md)
+
 ## Concepts
 
 ### Components in the Observability Infrastructure
