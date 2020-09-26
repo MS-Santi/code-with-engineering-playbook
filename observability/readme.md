@@ -1,5 +1,16 @@
 # Observability
 
+Questions that this guide should answer:
+
+* What is observability?
+* How can achieve Observability?
+* Why I do need an observability ? What kind of problems does it resolve and where does it help me ?
+* What's the difference from AMP (Application Performance Monitoring) and Observability.
+* Clarify the definitions of common topics (activity, span, trace, log, event, metric, etc)
+* As an engineer, what kinds of observability exists and what are their use cases (Samples)?
+* What is the difference between the observability of 'distributed tracing' (multiple service) and internal tracing (single service)
+* Can I go to this as a newbie and get pointers to learn?
+
 ## Introduction
 
 Observability is the set of capabilities of a system that allow to investigate whether it is performing and how. It provides the ability to understand the internal state of a system from the data it produces and the ability to explore that data to answer questions about what happened and why.
