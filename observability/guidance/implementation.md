@@ -1,9 +1,16 @@
 # Observability Implementation Guide
 
-* I've head Trace.WriteLine is an observability code smell. How can I identify and address?
-* Why and when to use TelemetryClient, Ilogger, IDomainLogger, etc
-* Should we use ILogger anymore?
-* Recommendations  on the dimensions (semantic logging)
-* How, when and why should an observability SDK be usedgit
-* How do I stay stack agnostic (easily target Splunk, Application Insights, Prometheus, etc) (Matt's sample)
-* Do you have a good sample code for basic observability?
+* Known Constructs - when to use them and identifying code smells:
+  * Trace.WriteLine
+  * TelemetryClient
+  * Ilogger
+  * IDomainLogger
+  * etc.
+* Semantic Logging: Recommendations on data "dimensions"
+* When, why, and how to use an observability SDK
+* When and how to implement platform agnostic approach. Easily targeting different platforms/SDKs
+  * Splunk
+  * Application Insights
+  * Prometheus
+  * Etc.
+* Sample directory for Observability implementation
