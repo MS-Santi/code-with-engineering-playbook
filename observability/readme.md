@@ -3,13 +3,13 @@
 Questions that this guide should answer:
 
 * What is observability?
-* How can achieve Observability?
-* Why I do need an observability ? What kind of problems does it resolve and where does it help me ?
+* Why I do need an observability? What kind of problems does it resolve and where does it help me ?
+* How can Observability be achieved?
 * What's the difference from AMP (Application Performance Monitoring) and Observability.
-* Clarify the definitions of common topics (activity, span, trace, log, event, metric, etc)
-* As an engineer, what kinds of observability exists and what are their use cases (Samples)?
-* What is the difference between the observability of 'distributed tracing' (multiple service) and internal tracing (single service)
-* Can I go to this as a newbie and get pointers to learn?
+* Clarify the definitions of common topics (activity, span, trace, log, event, metric, etc.)
+* What are the different observability use cases and where can samples be found?
+* What is the difference between **Internal Tracing** (single service) and **Distributed Tracing** (multiple services)?
+* What are the best resources to learn about observability?
 
 ## Introduction
 
@@ -17,23 +17,15 @@ Observability is the set of capabilities of a system that allow to investigate w
 
 These capabilities enable proactive monitoring via ad-hoc queries and reporting, and reactive alerting. In addition, with the help of AI, they can assist in providing predictive information.
 
-If the system departs from its normal operation, these capabilities ease the research into what is not going as expected. Telemetry information on the usage and performance of the system and its constituents assists in this research.
+If the system departs from its normal operation, these capabilities ease the research into what is not going as expected. Telemetry information on the usage and performance of the system and its constituents assists in this  research.
 
 In some instances, observability is required to enable key scenarios (i.e. scaling out/up and in/down), where observations the current system status can be compared to the defined scaling thresholds.
-
-## Resources
-
-This describes general concepts regarding observability. These concepts are used in the rest of this observability documentation:
-
-* [Observability in ML](./ml-observability) - Read on how Observability can be implemented in Machine Learning engagements effectively during Model tuning, experimentation and deployment.
-* [General Guidance](./guidance/readme.md)
-* [Planning Guidance](./guidance/planning.md)
-* [Implementation Guidance](./guidance/implementation.md)
-* [Tools and Frameworks](./tools-frameworks/readme.md) - Read about existing tools and frameworks that can assist in the instrumentation and implementation of observability capabilities.
 
 ## Concepts
 
 ### Components in the Observability Infrastructure
+
+An observable system will present one or more of the components depicted in the diagram below.
 
 ![](https://mermaid.ink/img/eyJjb2RlIjoiZmxvd2NoYXJ0IExSO1xuRVtFdmVudCBMb2dnaW5nXTtcbkNhKENhcHR1cmUpO1xuUHAoW1ByZS1wcm9jZXNzaW5nL0FnZ3JlZ2F0aW9uXSk7XG5MT1tbTG9jYWwgT3V0cHV0XV07XG5QcyhbUG9zdC1wcm9jZXNzaW5nL0FnZ3JlZ2F0aW9uXSk7XG5DWyhDb2xsZWN0aW9uKV07XG5SW1JlcG9ydGluZyBhbmQgVmlzdWFsaXphdGlvbl1cbkFJKChBSS9NTCkpO1xuU1svU3RyZWFtaW5nL107XG5QUltQYXR0ZXJuIFJlY29nbml0aW9uXTtcbnN1YmdyYXBoIE9ic2VydmVkIFN5c3RlbTtcbiAgICBDYSAtLi0-IExPO1xuICAgIENhIDwtLi0-IFBwO1xuICAgIE1ldHJpY3MgLS0-IENhO1xuICAgIEUgLS0-IENhO1xuZW5kO1xuQ2EgLS4tPiBTO1xuQ2EgPT0-IEM7XG5DIDwtLi0-IFBzO1xuQyAtLT4gUjtcbkMgLS0-IEFsZXJ0aW5nO1xuQW5hbHlzaXMgLS0-IFByZWRpY3Rpb247XG5BbmFseXNpcyAtLT4gUFI7XG5BSSAtLi0-IEFuYWx5c2lzO1xuQyAtLT4gQW5hbHlzaXM7IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQiLCJ0aGVtZVZhcmlhYmxlcyI6eyJiYWNrZ3JvdW5kIjoid2hpdGUiLCJwcmltYXJ5Q29sb3IiOiIjRUNFQ0ZGIiwic2Vjb25kYXJ5Q29sb3IiOiIjZmZmZmRlIiwidGVydGlhcnlDb2xvciI6ImhzbCg4MCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwicHJpbWFyeUJvcmRlckNvbG9yIjoiaHNsKDI0MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJzZWNvbmRhcnlCb3JkZXJDb2xvciI6ImhzbCg2MCwgNjAlLCA4My41Mjk0MTE3NjQ3JSkiLCJ0ZXJ0aWFyeUJvcmRlckNvbG9yIjoiaHNsKDgwLCA2MCUsIDg2LjI3NDUwOTgwMzklKSIsInByaW1hcnlUZXh0Q29sb3IiOiIjMTMxMzAwIiwic2Vjb25kYXJ5VGV4dENvbG9yIjoiIzAwMDAyMSIsInRlcnRpYXJ5VGV4dENvbG9yIjoicmdiKDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxLCA5LjUwMDAwMDAwMDEpIiwibGluZUNvbG9yIjoiIzMzMzMzMyIsInRleHRDb2xvciI6IiMzMzMiLCJtYWluQmtnIjoiI0VDRUNGRiIsInNlY29uZEJrZyI6IiNmZmZmZGUiLCJib3JkZXIxIjoiIzkzNzBEQiIsImJvcmRlcjIiOiIjYWFhYTMzIiwiYXJyb3doZWFkQ29sb3IiOiIjMzMzMzMzIiwiZm9udEZhbWlseSI6IlwidHJlYnVjaGV0IG1zXCIsIHZlcmRhbmEsIGFyaWFsIiwiZm9udFNpemUiOiIxNnB4IiwibGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsIm5vZGVCa2ciOiIjRUNFQ0ZGIiwibm9kZUJvcmRlciI6IiM5MzcwREIiLCJjbHVzdGVyQmtnIjoiI2ZmZmZkZSIsImNsdXN0ZXJCb3JkZXIiOiIjYWFhYTMzIiwiZGVmYXVsdExpbmtDb2xvciI6IiMzMzMzMzMiLCJ0aXRsZUNvbG9yIjoiIzMzMyIsImVkZ2VMYWJlbEJhY2tncm91bmQiOiIjZThlOGU4IiwiYWN0b3JCb3JkZXIiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJhY3RvckJrZyI6IiNFQ0VDRkYiLCJhY3RvclRleHRDb2xvciI6ImJsYWNrIiwiYWN0b3JMaW5lQ29sb3IiOiJncmV5Iiwic2lnbmFsQ29sb3IiOiIjMzMzIiwic2lnbmFsVGV4dENvbG9yIjoiIzMzMyIsImxhYmVsQm94QmtnQ29sb3IiOiIjRUNFQ0ZGIiwibGFiZWxCb3hCb3JkZXJDb2xvciI6ImhzbCgyNTkuNjI2MTY4MjI0MywgNTkuNzc2NTM2MzEyOCUsIDg3LjkwMTk2MDc4NDMlKSIsImxhYmVsVGV4dENvbG9yIjoiYmxhY2siLCJsb29wVGV4dENvbG9yIjoiYmxhY2siLCJub3RlQm9yZGVyQ29sb3IiOiIjYWFhYTMzIiwibm90ZUJrZ0NvbG9yIjoiI2ZmZjVhZCIsIm5vdGVUZXh0Q29sb3IiOiJibGFjayIsImFjdGl2YXRpb25Cb3JkZXJDb2xvciI6IiM2NjYiLCJhY3RpdmF0aW9uQmtnQ29sb3IiOiIjZjRmNGY0Iiwic2VxdWVuY2VOdW1iZXJDb2xvciI6IndoaXRlIiwic2VjdGlvbkJrZ0NvbG9yIjoicmdiYSgxMDIsIDEwMiwgMjU1LCAwLjQ5KSIsImFsdFNlY3Rpb25Ca2dDb2xvciI6IndoaXRlIiwic2VjdGlvbkJrZ0NvbG9yMiI6IiNmZmY0MDAiLCJ0YXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwidGFza0JrZ0NvbG9yIjoiIzhhOTBkZCIsInRhc2tUZXh0TGlnaHRDb2xvciI6IndoaXRlIiwidGFza1RleHRDb2xvciI6IndoaXRlIiwidGFza1RleHREYXJrQ29sb3IiOiJibGFjayIsInRhc2tUZXh0T3V0c2lkZUNvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dENsaWNrYWJsZUNvbG9yIjoiIzAwMzE2MyIsImFjdGl2ZVRhc2tCb3JkZXJDb2xvciI6IiM1MzRmYmMiLCJhY3RpdmVUYXNrQmtnQ29sb3IiOiIjYmZjN2ZmIiwiZ3JpZENvbG9yIjoibGlnaHRncmV5IiwiZG9uZVRhc2tCa2dDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQm9yZGVyQ29sb3IiOiJncmV5IiwiY3JpdEJvcmRlckNvbG9yIjoiI2ZmODg4OCIsImNyaXRCa2dDb2xvciI6InJlZCIsInRvZGF5TGluZUNvbG9yIjoicmVkIiwibGFiZWxDb2xvciI6ImJsYWNrIiwiZXJyb3JCa2dDb2xvciI6IiM1NTIyMjIiLCJlcnJvclRleHRDb2xvciI6IiM1NTIyMjIiLCJjbGFzc1RleHQiOiIjMTMxMzAwIiwiZmlsbFR5cGUwIjoiI0VDRUNGRiIsImZpbGxUeXBlMSI6IiNmZmZmZGUiLCJmaWxsVHlwZTIiOiJoc2woMzA0LCAxMDAlLCA5Ni4yNzQ1MDk4MDM5JSkiLCJmaWxsVHlwZTMiOiJoc2woMTI0LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTQiOiJoc2woMTc2LCAxMDAlLCA5Ni4yNzQ1MDk4MDM5JSkiLCJmaWxsVHlwZTUiOiJoc2woLTQsIDEwMCUsIDkzLjUyOTQxMTc2NDclKSIsImZpbGxUeXBlNiI6ImhzbCg4LCAxMDAlLCA5Ni4yNzQ1MDk4MDM5JSkiLCJmaWxsVHlwZTciOiJoc2woMTg4LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkifX19)
 
@@ -81,7 +73,22 @@ Tracing is the practice of tracking dependencies between logged events, and incl
 
 ### Semantic Logging
 
+In its most simple case, telemetry generated by applications will be used by humans to understand execution instances of the systems that generated them.
+Semantic logging is the practice of deferring the final formatting of the telemetry information into a human-readable format. Instead, semantic logging attempts to preserve the original format of the information (strongly typed) -even if it is too voluminous or non-human readable. This ensures that the consumer of the information has the most faithful representation of the telemetry data and can use it (and combine it with other information) in ways that would be difficult -if not impossible- if it had been processed into a human-readable format.
+
 [Description of Semantic Logging](https://github.com/microsoftarchive/semantic-logging)
+
+## Resources
+
+This describes general concepts regarding observability. These concepts are used in the rest of this observability documentation:
+
+* [Observability in ML](./ml-observability) - Read on how Observability can be implemented in Machine Learning engagements effectively during Model tuning, experimentation and deployment.
+* [General Guidance](./guidance/readme.md)
+* [Planning Guidance](./guidance/planning.md)
+* [Implementation Guidance](./guidance/implementation.md)
+* [Tools and Frameworks](./tools-frameworks/readme.md) - Read about existing
+tools and frameworks that can assist in the instrumentation and implementation
+of observability capabilities.
 
 ## Observability in ML
 
