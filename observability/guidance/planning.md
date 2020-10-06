@@ -1,7 +1,9 @@
 # Observability Planning Guide
 
-* What's the minimal bar that I should meet on observability.
-* What are some common patterns that I can use?  
-* I need roughly estimate Dev & SRE efforts to dev/integrate/debug/support observability in my app ?
-* Where do we look to get started given a specific scenario?
-* How do I keep my code clean and flexible but still observable?
+This guide will include general planning topics that will help ensure that observability is considered and implemented as one of the important cross-cutting concerns during development.
+
+* What are the minimal non-functional requirements for observability?
+* What are some common patterns in observability?  
+* Where can resources be found to get started given a specific scenario?
+* What are the guidelines to keep code clean and flexible, yet observable?
+* What are the guidelines for estimatimating development and site reliability engineering (SRE) efforts around observability?
