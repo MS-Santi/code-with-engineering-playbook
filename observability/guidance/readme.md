@@ -13,7 +13,7 @@ This document provides general guidance regarding observability.
 Topics in this guide:
 
 * [Getting Started](#Getting-Started---Recommended-Practices)
-* [Common Pitfalls](#Commom-Pitfalls)
+* [Common Pitfalls](#Common-Pitfalls)
 * [Event Logging](./event-logging.md)
 * [Metrics](./metrics.md)
 * [Tracing](./tracing.md)
