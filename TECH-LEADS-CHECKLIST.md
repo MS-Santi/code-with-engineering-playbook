@@ -45,7 +45,7 @@ More details on [Unit Testing](automated-testing/unit-testing/readme.md)
 - [ ] Health of the system is monitored.
 - [ ] The client and server side observability data can be differentiated.
 - [ ] Logging configuration can be modified without code changes (eg: verbose mode).
-- [ ] [Incoming tracing context](observability/correlation-id.md) is propagated to allow for production issue debugging purposes.
+- [ ] [Incoming tracing context](./observability/guidance/readme.md#Correlation-IDs) is propagated to allow for production issue debugging purposes.
 - [ ] GDPR compliance is ensured regarding PII (Personally Identifiable Information).
 
 ## Agile/Scrum
