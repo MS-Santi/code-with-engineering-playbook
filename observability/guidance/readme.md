@@ -14,11 +14,11 @@ Topics in this guide:
 
 * [Getting Started](#Getting-Started---Recommended-Practices)
 * [Common Pitfalls](#Commom-Pitfalls)
-* [Event Logging](#Event-Logging)
-* [Metrics](#Metrics)
-* [Tracing](#Tracing)
-  * [Correlation Ids](#Correlation-IDs)
-* [Alerting](#Alerting)
+* [Event Logging](./event-logging.md)
+* [Metrics](./metrics.md)
+* [Tracing](./tracing.md)
+  * [Correlation Ids](./tracing.md#Correlation-IDs)
+* [Alerting](./alerting.md)
 
 More specific guidance is available for:
 
@@ -57,79 +57,6 @@ Every data logged must contain rich context, which is useful for getting an over
 ### Personally Identifiable Information
 
 As a general rule, do not log any customer sensitive and Personal Identifiable Information (PII). Ensure any pertinent privacy regulations are followed regarding PII (Ex: GDPR etc.,)
-
-
-## Metrics
-
-### Overview
-
-Metrics provide a near real-time stream of data, informing operators and stakeholders about the functions the system is performing as well as its health. Unlike logging and tracing, metric data tends to be more efficient to transmit and store.
-
-### Collection Methods
-
-Metric collection approaches fall into two broad categories: push metrics & pull metrics. Push metrics means that the originating component sends the data to a remote service or agent. [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor) and [Etsy's statsd](https://github.com/statsd/statsd) are examples of push metrics. Some of the strengths with push metrics include:
-
-* Only require network egress to the remote target.
-* Originating component controls the frequency of measurement.
-* Simplified configuration as the component only needs to know the destination of where to send data.
-
-Some of the trade-offs with this approach:
-
-* At scale, it is much more difficult to control data transmission rates, which can cause service throttling or dropping of values.
-* Determining if every component, particularly in a dynamic scale environment, is healthy and sending data is difficult.
-
-In the case of pull metrics, each originating component publishes an endpoint for the metric agent to connect to and gather measurements. [Prometheus](https://prometheus.io/) and its ecosystem of tools are an example of pull style metrics. Benefits experienced using a pull metrics setup may involve:
-
-* Singular configuration for determining what is measured and the frequency of measurement for the local environment.
-* Every measurement target has a meta metric related to if the collection is successful or not, which can be used as a general health check.
-* Support for routing, filtering and processing of metrics before sending them onto a globally central metrics store.
-
-Items of concern to some may include:
-
-* Configuring & managing data sources can lead to a complex configuration. Prometheus has tooling to auto-discover and configure data sources in some environments, such as Kubernetes, but there are always exceptions to this, which lead to configuration complexity.
-* Network configuration may add further complexity if firewalls and other ACLs need to be managed to allow connectivity.
-
-### Best Practices
-
-#### When should I use metrics instead of logs?
-
-[Logs vs Metrics](../readme.md) covers some high level guidance on when to utilize metric data and when to use log data. Both have a valuable part to play in creating observable systems.
-
-#### What should be tracked?
-
-System critical measurements that relate to the application/machine health, which are usually excellent alert candidates. Work with your engineering and devops peers to identify the metrics, but they may include:
-
-* CPU and memory utilisation.
-* Request rate.
-* Queue length.
-* Unexpected exception count.
-
-Important business-related measurements, which drive reporting to stakeholders. Consult with the various stakeholders of the component, but some examples may include:
-
-* Jobs performed.
-* User Session length.
-* Games played.
-* Site visits.
-
-#### Dimension Labels
-
-Modern metric systems today usually define a single time series metric as the combination of the name of the metric and its dictionary of dimension labels. Labels are an excellent way to distinguish one instance of a metric, from another while still allowing for aggregation and other operations to be performed on the set for analysis. Some common labels used in metrics may include:
-
-* Container Name
-* Host name
-* Code Version
-* Kubernetes cluster name
-* Azure Region
-
-> Note: Since dimension labels are used for aggregations and grouping operations, do not use unique strings or those with high cardinality as the value of a label. The value of the label is significantly diminished for reporting and in many cases has a negative performance hit on the metric system used to track it.
-
-### Recommended Tools
-
-* [Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) - Umbrella of services including system metrics, log analytics and more.
-* [Prometheus](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) - A real-time monitoring & alerting application. It's exposition format for exposing time-series is the basis for OpenMetrics's standard format.
-* [Thanos](https://thanos.io) - Open source, highly available Prometheus setup with long term storage capabilities.
-* [Cortex](https://cortexmetrics.io) - Horizontally scalable, highly available, multi-tenant, long term Prometheus.
-* [Grafana](https://grafana.com) - Open source dashboard & visualization tool. Supports Log, Metrics and Distributed tracing data sources.
 
 ## Tracing
 
@@ -194,18 +121,3 @@ Using Correlation ID helps secondary systems to correlate data without applicati
 ##### Troubleshooting Errors
 
 For troubleshooting an errors, Correlation ID is a great starting point to trace the workflow of a transaction.
-
-## Alerting
-
-One of the goals of building highly observable systems is to provide valuable insight into the behavior of the application. Observable systems allow problems to be identified and surfaced through alerts before end users are impacted.
-
-### Best Practices
-
-* The foremost thing to do before creating alerts is to implement observability. Without monitoring systems in place, it becomes next to impossible to know what activities need to be monitored and when to alert the teams.
-* Identify what the application's minimum viable service quality needs to be. It is not what you intend to deliver, but is acceptable for the customer. These [Service Level Objectives](https://landing.google.com/sre/sre-book/chapters/*ervice-level-objectives/)(SLOs) are a metric for measurement of the application's performance.
-* SLOs are defined with respect to the end users. The alerts must watch for visible impact to the user. For example, alerting on request rate, latency and errors.
-* Use automated, scriptable tools to mimic end-to-end important code paths relatable to activities in the application. Create alert polices on user impacting events or metric rate of change.
-* Alert fatigue is real. Engineers are recommended to pay attention to their monitoring system so that accurate alerts and thresholds can be defined.
-* Establish a primary channel for alerts that needs immediate attention and tag the right team/person(s) based on the nature of the incident. Not every single alert needs to be sent to the primary on-call channel.
-* Establish a secondary channel for items that need to be looked into and does not affect the users, yet. For example, storage that nearing capacity threshold. These items will be what the engineering services will look to regularly to monitor the *ealth of the system.
-* It is important to learn from each incident and continually improve the process. After every incident has been triaged, conduct a [post mortem of the scenario](https://landing.google.com/sre/workbook/chapters/postmortem-culture/). Scenarios and situations that were not initially considered will occur and the post mortem workflow is a great way to highlight that to improve the monitoring/alerting of the system. Configuring an alert to detect that incident scenario is a good idea to see if the event occurs again.
