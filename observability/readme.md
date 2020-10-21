@@ -3,9 +3,9 @@
 Questions that this guide should answer:
 
 * What is observability?
-* Why I do need an observability? What kind of problems does it resolve and where does it help me ?
-* How can Observability be achieved?
-* What's the difference from AMP (Application Performance Monitoring) and Observability.
+* Why I do need observability? What kind of problems does it solve and where does it help me ?
+* How can observability be achieved?
+* What's the difference between AMP (Application Performance Monitoring) and observability.
 * Clarify the definitions of common topics (activity, span, trace, log, event, metric, etc.)
 * What are the different observability use cases and where can samples be found?
 * What is the difference between **Internal Tracing** (single service) and **Distributed Tracing** (multiple services)?
@@ -82,7 +82,7 @@ Semantic logging is the practice of deferring the final formatting of the teleme
 
 This describes general concepts regarding observability. These concepts are used in the rest of this observability documentation:
 
-* [Observability in ML](./ml-observability) - Read on how Observability can be implemented in Machine Learning engagements effectively during Model tuning, experimentation and deployment.
+* [Observability in ML](./ml-observability) - Read on how observability can be implemented in Machine Learning engagements effectively during Model tuning, experimentation and deployment.
 * [General Guidance](./guidance/readme.md)
 * [Planning Guidance](./guidance/planning.md)
 * [Implementation Guidance](./guidance/implementation.md)
